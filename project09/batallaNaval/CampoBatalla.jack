@@ -1,0 +1,208 @@
+
+/**
+ * Dibuja el campo de batalla, mantiene en memoria los barcos y controla la visual de los impactos.
+ * Se gana el juego si se le da a todos los barcos en al menos 25 intentos.
+ * 
+ * @author Catalina Patino
+ */
+ class CampoBatalla {
+     static Random random;
+     field Matriz campo;
+     field Array coordenadasCampoFila, coordenadasCampoColumna;
+     field Barco barco1, barco2, barco3;
+     field int intentos, barcosHundidos;
+     field int filas, columnas;
+     field char marcaFallo;
+     field Texto texto;
+
+     /**
+     * Crea el campo de batalla y ubica aleatoriamente los 3 barcos. Se valida entre ellos que los barcos no se crucen, si se cruzan,
+     * se debe reubicar el último creado hasta que no haya cruce.
+     */
+     constructor CampoBatalla new(Random randomP) {
+         var boolean hayCruce;
+         var char marcaBarco1, marcaBarco2, marcaBarco3;
+         let marcaBarco1 = 49; // '1'
+         let marcaBarco2 = 50; // '2'
+         let marcaBarco3 = 51; // '3'
+         let marcaFallo = 111; // 'o'
+         let filas = 6;
+         let columnas = filas;
+         let random = randomP;
+         let campo = Matriz.new(filas, columnas);
+         let coordenadasCampoFila = Array.new(filas);
+         do setCoordenadas(coordenadasCampoFila, 4, 3, filas);         
+         let coordenadasCampoColumna = Array.new(columnas);
+         do setCoordenadas(coordenadasCampoColumna, 5, 4, columnas);
+         let intentos = 0;
+         let barco1 = Barco.new(random.getAleatorioByN(5), random.getAleatorioByN(5), random.getAleatorioByN(3) + 2, random.getAleatorioByN(4) + 1, marcaBarco1);
+         let barco2 = Barco.new(random.getAleatorioByN(5), random.getAleatorioByN(5), random.getAleatorioByN(3) + 2, random.getAleatorioByN(4) + 1, marcaBarco2);
+         while (barco2.seCruza(barco1)) {
+             let barco2 = null;
+             let barco2 = Barco.new(random.getAleatorioByN(5), random.getAleatorioByN(5), random.getAleatorioByN(3) + 2, random.getAleatorioByN(4) + 1, marcaBarco2);
+         }
+         let barco3 = Barco.new(random.getAleatorioByN(5), random.getAleatorioByN(5), random.getAleatorioByN(3) + 2, random.getAleatorioByN(4) + 1, marcaBarco3);
+         let hayCruce = false;
+         let hayCruce = barco1.seCruza(barco3) | barco2.seCruza(barco3);
+         while (hayCruce) {
+             let hayCruce = false;
+             let barco3 = null;
+             let barco3 = Barco.new(random.getAleatorioByN(5), random.getAleatorioByN(5), random.getAleatorioByN(3) + 2, random.getAleatorioByN(4) + 1, marcaBarco3);             
+             let hayCruce = barco1.seCruza(barco3) | barco2.seCruza(barco3);
+         }
+         let barcosHundidos = 0;
+         let texto = Texto.new();
+         do texto.printEstadoJuego(intentos, barcosHundidos);
+         do texto.printInstrucciones();
+         do texto.printEmpezar();
+         //do trampa();
+         return this;
+     }
+
+     /**
+      * Imprime el disparo con la marca correspondiente en la fila y columna dada
+      */
+     method void mostrarDisparo(int fila, int columna, char marca) {
+         var int posX, posY;         
+         let posX = coordenadasCampoFila[fila];
+         let posY = coordenadasCampoColumna[columna];
+         do Output.moveCursor(posX, posY);
+         do Output.printChar(marca);
+         return;
+     }
+
+     /**
+      * Verifica si el juego ya terminó
+      * De hacerlo imprime el correspondiente resultado
+      */
+     method boolean verificarFinal() {
+         if (barcosHundidos = 3) {
+             do texto.finJuego(true);
+             return true;
+         } else {
+             if (intentos > 25) {
+             do texto.finJuego(false);
+             return true;
+             }
+         }
+         return false;
+     }
+
+     /**
+      * Verifica si el disparo en la fila y columna dada
+      * Si el barco se hunde con el disparo incrementa barcosHundidos
+      * Marca con el respectivo valor la matriz campo si el disparo acierta
+      * Si el disparo acierta se retorna true, de lo contrario false
+      * Al final marca el resultado del disparo en la pantalla
+      */
+     method boolean generarDisparoBarco(int fila, int columna, Barco barco, int valor) {
+         var char marca;
+         var boolean acerto;
+         let marca = 0;
+         let acerto = false;
+         if ((~barco.getEstoyHundido()) & barco.verificaDisparo(fila, columna)) {
+             if (barco.getEstoyHundido()) {
+                 let barcosHundidos = barcosHundidos + 1;
+             }
+             do campo.setValor(fila, columna, valor);
+             let marca = barco.getMarca();
+             let acerto = true;
+             do mostrarDisparo(fila, columna, marca);
+         }         
+         return acerto;
+     }
+
+     /**
+      * Corre el juego de batalla naval hasta que termina la partida
+      */
+     method void jugar() {
+         var Coordenada coordenada;
+         var boolean gameOver, acerto;
+         var int fila, columna;
+         let gameOver = false;
+         while (~gameOver) {
+             let coordenada = Coordenada.new();
+             do coordenada.pedirCoordenadas();
+             let acerto = false;
+             let fila = coordenada.getI();
+             let columna = coordenada.getJ();
+             if (campo.getValor(fila, columna) = 0) {
+                 do campo.setValor(fila, columna, 4);
+                 let acerto = generarDisparoBarco(fila, columna, barco1, 1);
+                 if (~acerto) {
+                     let acerto = generarDisparoBarco(fila, columna, barco2, 2);
+                 }
+                 if (~acerto) {
+                     let acerto = generarDisparoBarco(fila, columna, barco3, 3);
+                 }
+                 if (~acerto) {
+                     do mostrarDisparo(fila, columna, marcaFallo);
+                 }
+                 let intentos = intentos + 1;
+                 do texto.printEstadoJuego(intentos, barcosHundidos);
+             }         
+             let gameOver = verificarFinal();
+         }
+         return;
+     }
+
+
+     /**
+      * Define los valores de un array dado de acuerdo a un valor inicial y un incremento
+      * Los valores corresponden a la posición en la que se debe escribir el caracter dentro del tablero
+      */
+     method void setCoordenadas(Array array, int r0, int aumento, int tamano) {
+         var int i;
+         let i = 0;
+         while (i < tamano) {
+             let array[i] = r0;
+             let r0 = r0 + aumento;          
+             let i = i + 1;
+         }
+         return;
+     }
+
+     /**
+     * Destructor de la clase Matriz
+     */
+    method void dispose() {
+        do campo.dispose();
+        do coordenadasCampoFila.dispose();
+        do coordenadasCampoColumna.dispose();
+        do barco1.dispose();
+        do barco2.dispose();
+        do barco3.dispose();
+        do texto.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }     
+
+     /**
+      * Muestra los parámetros iniX, iniY, finX, finY de los barcos
+      * Objetivo para debug
+      */
+     method void trampa() {
+         do Output.moveCursor(0,0);
+         do Output.println();
+         do printAtributosBarco(barco1);
+         do printAtributosBarco(barco2);
+         do printAtributosBarco(barco3);
+         return;
+     }
+
+     /**
+      * Imprime los atributos del barco especificado
+      */
+     method void printAtributosBarco(Barco barco) {
+         do Output.printInt(barco.inicialX());
+         do Output.printString(" ");
+         do Output.printInt(barco.inicialY());
+         do Output.printString(" ");
+         do Output.printInt(barco.finalX());
+         do Output.printString(" ");
+         do Output.printInt(barco.finalY());
+         do Output.printString(" ");
+         do Output.printString(" ");
+         return;
+     }
+ }

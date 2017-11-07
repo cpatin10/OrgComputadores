@@ -1,0 +1,75 @@
+/**
+ * Clase para la creción y manejo de matrices
+ *
+ * @author Catalina Patiño
+ */
+
+class Matriz {
+    field int columnas, filas;
+    field Array matriz;
+
+    /**
+     * Constructor para la clase Matriz
+     * Define el número de columnas y filas de la misma
+     */
+    constructor Matriz new(int filasP, int columnasP) {
+        var int i, j;
+        let columnas = columnasP;
+        let filas = filasP;
+        let matriz = Array.new(columnas*filas);
+        let i = 0;
+        let j = 0;
+        while (i < filas) {
+            while (j < columnas) {
+                let matriz[i*columnas+j] = 0;
+                let j = j + 1;
+            }
+            let i = i + 1;
+        }
+        return this;
+    }
+
+    /**
+     * Retorna el valor de la matriz en la posición [i, j]
+     */
+    method int getValor(int i, int j) {
+        return matriz[i*columnas+j];
+    }
+
+    /**
+     * Almacena el valor dado en la matriz en la posición [i, j]
+     */
+    method void setValor(int i, int j, int valor) {
+        let matriz[i*columnas+j] = valor;
+        return;
+    }
+
+    /**
+     * Imprime la matriz con sus valores actuales
+     */
+    method void printMatriz() {
+        var int i, j;
+        let i = 0;
+        let j = 0;
+        while (i < filas) {
+            let j = 0;
+            while (j < columnas) {
+                do Output.printInt(getValor(i, j));
+                do Output.printString("  ");
+                let j = j + 1;
+            }
+            do Output.println();
+            let i = i + 1;
+        }
+        return;
+    }
+
+    /**
+     * Destructor de la clase Matriz
+     */
+    method void dispose() {
+        do matriz.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+}

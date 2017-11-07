@@ -1,0 +1,91 @@
+/**
+ * Clase para la impresión del texto necesario para la ejecución del juego
+ * No incluye el texto relacionado con la petición de coordenadas
+ */
+class Texto {
+    field int posX, posY;
+
+    /**
+     * Constructor de la clase Texto
+     * Define las posiciones 'x' y 'y' estándar
+     */
+    constructor Texto new() {
+        let posX = 31;
+        let posY = 0;
+        return this;
+    }
+
+    /**
+      * Imprime el resultado del juego
+      */
+     method void finJuego(boolean gana) {
+         let posY = 2;             
+         if (gana) {   
+             do Output.moveCursor(posY, 40);
+             do Output.printString("Ganaste!");
+         } else {
+             do Output.moveCursor(posY, 38);
+             do Output.printString("Intenta de nuevo!");
+         }
+         return;
+     }
+
+    /**
+     * Imprime la señal de inicio de juego
+     */
+    method void printEmpezar() {
+        let posY = 2;
+        do Output.moveCursor(posY, 40);
+        do Output.printString("A jugar!");
+        return;
+    }
+
+    /**
+     * Facilita el borrado del texto que indica inicio de juego
+     */
+    method void borrarEmpezar() {
+        let posY = 2;
+        do Output.moveCursor(posY, 40);
+        do Output.printString("        ");
+        return;
+    }
+
+     /**
+      * Imprime el estado actual del juego (disparos y barcos hundidos)
+      */
+    method void printEstadoJuego(int intentos, int barcosHundidos) {
+         let posY = 6;
+         do Output.moveCursor(posY, posX);
+         do Output.printString("Disparos: ");
+         do Output.printInt(intentos);
+         let posY = posY + 2;
+         do Output.moveCursor(posY, posX);
+         do Output.printString("Barcos Hundidos: ");
+         do Output.printInt(barcosHundidos);
+         return;
+     }
+
+     /**
+      * Imprime las instrucciones para el ingreso de las coordenadas
+      */
+     method void printInstrucciones() {
+         let posY = 11;
+         do Output.moveCursor(posY, posX);
+         do Output.printString("Para ingresar las coordenadas:");
+         let posY = posY + 2;
+         do Output.moveCursor(posY, posX);
+         do Output.printString("Ingrese el valor entre 1 y 6.");
+         let posY = posY + 2;
+         do Output.moveCursor(posY, posX);
+         do Output.printString ("Al finalizar presione Enter.");
+         return;
+     }
+
+    /**
+     * Destructor de la clase Texto
+     */
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+}

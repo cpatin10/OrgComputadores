@@ -1,0 +1,14 @@
+class Barco{
+
+  function void set() {
+     let a = 10;
+     return;
+  }
+
+  method int get(){
+     var int c;
+     let c = 1;
+     return c;
+  }
+  
+}

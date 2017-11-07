@@ -1,0 +1,8 @@
+class Barco {
+
+  constructor Barco new(int a, boolean b, Barco c) {
+     let a = 10;
+     return;
+  }
+  
+}

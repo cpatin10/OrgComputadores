@@ -1,0 +1,540 @@
+function CampoBatalla.new 4
+push constant 12
+call Memory.alloc 1
+pop pointer 0
+push constant 49
+pop local 1
+push constant 50
+pop local 2
+push constant 51
+pop local 3
+push constant 111
+pop this 10
+push constant 6
+pop this 8
+push this 8
+pop this 9
+push argument 0
+pop static 0
+push this 8
+push this 9
+call Matriz.new 2
+pop this 0
+push this 8
+call Array.new 1
+pop this 1
+push pointer 0
+push this 1
+push constant 4
+push constant 3
+push this 8
+call CampoBatalla.setCoordenadas 5
+pop temp 0
+push this 9
+call Array.new 1
+pop this 2
+push pointer 0
+push this 2
+push constant 5
+push constant 4
+push this 9
+call CampoBatalla.setCoordenadas 5
+pop temp 0
+push constant 0
+pop this 6
+push static 0
+push constant 5
+call Random.getAleatorioByN 2
+push static 0
+push constant 5
+call Random.getAleatorioByN 2
+push static 0
+push constant 3
+call Random.getAleatorioByN 2
+push constant 2
+add
+push static 0
+push constant 4
+call Random.getAleatorioByN 2
+push constant 1
+add
+push local 1
+call Barco.new 5
+pop this 3
+push static 0
+push constant 5
+call Random.getAleatorioByN 2
+push static 0
+push constant 5
+call Random.getAleatorioByN 2
+push static 0
+push constant 3
+call Random.getAleatorioByN 2
+push constant 2
+add
+push static 0
+push constant 4
+call Random.getAleatorioByN 2
+push constant 1
+add
+push local 2
+call Barco.new 5
+pop this 4
+label WHILE_EXP0
+push this 4
+push this 3
+call Barco.seCruza 2
+not
+if-goto WHILE_END0
+push constant 0
+pop this 4
+push static 0
+push constant 5
+call Random.getAleatorioByN 2
+push static 0
+push constant 5
+call Random.getAleatorioByN 2
+push static 0
+push constant 3
+call Random.getAleatorioByN 2
+push constant 2
+add
+push static 0
+push constant 4
+call Random.getAleatorioByN 2
+push constant 1
+add
+push local 2
+call Barco.new 5
+pop this 4
+goto WHILE_EXP0
+label WHILE_END0
+push static 0
+push constant 5
+call Random.getAleatorioByN 2
+push static 0
+push constant 5
+call Random.getAleatorioByN 2
+push static 0
+push constant 3
+call Random.getAleatorioByN 2
+push constant 2
+add
+push static 0
+push constant 4
+call Random.getAleatorioByN 2
+push constant 1
+add
+push local 3
+call Barco.new 5
+pop this 5
+push constant 0
+pop local 0
+push this 3
+push this 5
+call Barco.seCruza 2
+push this 4
+push this 5
+call Barco.seCruza 2
+or
+pop local 0
+label WHILE_EXP1
+push local 0
+not
+if-goto WHILE_END1
+push constant 0
+pop local 0
+push constant 0
+pop this 5
+push static 0
+push constant 5
+call Random.getAleatorioByN 2
+push static 0
+push constant 5
+call Random.getAleatorioByN 2
+push static 0
+push constant 3
+call Random.getAleatorioByN 2
+push constant 2
+add
+push static 0
+push constant 4
+call Random.getAleatorioByN 2
+push constant 1
+add
+push local 3
+call Barco.new 5
+pop this 5
+push this 3
+push this 5
+call Barco.seCruza 2
+push this 4
+push this 5
+call Barco.seCruza 2
+or
+pop local 0
+goto WHILE_EXP1
+label WHILE_END1
+push constant 0
+pop this 7
+call Texto.new 0
+pop this 11
+push this 11
+push this 6
+push this 7
+call Texto.printEstadoJuego 3
+pop temp 0
+push this 11
+call Texto.printInstrucciones 1
+pop temp 0
+push this 11
+call Texto.printEmpezar 1
+pop temp 0
+push pointer 0
+call CampoBatalla.trampa 1
+pop temp 0
+push pointer 0
+return
+function CampoBatalla.mostrarDisparo 2
+push argument 0
+pop pointer 0
+push argument 1
+push this 1
+add
+pop pointer 1
+push that 0
+pop local 0
+push argument 2
+push this 2
+add
+pop pointer 1
+push that 0
+pop local 1
+push local 0
+push local 1
+call Output.moveCursor 2
+pop temp 0
+push argument 3
+call Output.printChar 1
+pop temp 0
+push constant 0
+return
+function CampoBatalla.verificarFinal 0
+push argument 0
+pop pointer 0
+push this 7
+push constant 3
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 11
+push constant 0
+not
+call Texto.finJuego 2
+pop temp 0
+push constant 0
+not
+return
+goto IF_END0
+label IF_FALSE0
+push this 6
+push constant 25
+gt
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push this 11
+push constant 0
+call Texto.finJuego 2
+pop temp 0
+push constant 0
+not
+return
+label IF_FALSE1
+label IF_END0
+push constant 0
+return
+function CampoBatalla.generarDisparoBarco 2
+push argument 0
+pop pointer 0
+push constant 0
+pop local 0
+push constant 0
+pop local 1
+push argument 3
+call Barco.getEstoyHundido 1
+not
+push argument 3
+push argument 1
+push argument 2
+call Barco.verificaDisparo 3
+and
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push argument 3
+call Barco.getEstoyHundido 1
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push this 7
+push constant 1
+add
+pop this 7
+label IF_FALSE1
+push this 0
+push argument 1
+push argument 2
+push argument 4
+call Matriz.setValor 4
+pop temp 0
+push argument 3
+call Barco.getMarca 1
+pop local 0
+push constant 0
+not
+pop local 1
+push pointer 0
+push argument 1
+push argument 2
+push local 0
+call CampoBatalla.mostrarDisparo 4
+pop temp 0
+label IF_FALSE0
+push local 1
+return
+function CampoBatalla.jugar 5
+push argument 0
+pop pointer 0
+push constant 0
+pop local 1
+label WHILE_EXP0
+push local 1
+not
+not
+if-goto WHILE_END0
+call Coordenada.new 0
+pop local 0
+push local 0
+call Coordenada.pedirCoordenadas 1
+pop temp 0
+push constant 0
+pop local 2
+push local 0
+call Coordenada.getI 1
+pop local 3
+push local 0
+call Coordenada.getJ 1
+pop local 4
+push this 0
+push local 3
+push local 4
+call Matriz.getValor 3
+push constant 0
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 0
+push local 3
+push local 4
+push constant 4
+call Matriz.setValor 4
+pop temp 0
+push pointer 0
+push local 3
+push local 4
+push this 3
+push constant 1
+call CampoBatalla.generarDisparoBarco 5
+pop local 2
+push local 2
+not
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push pointer 0
+push local 3
+push local 4
+push this 4
+push constant 2
+call CampoBatalla.generarDisparoBarco 5
+pop local 2
+label IF_FALSE1
+push local 2
+not
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push pointer 0
+push local 3
+push local 4
+push this 5
+push constant 3
+call CampoBatalla.generarDisparoBarco 5
+pop local 2
+label IF_FALSE2
+push local 2
+not
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push pointer 0
+push local 3
+push local 4
+push this 10
+call CampoBatalla.mostrarDisparo 4
+pop temp 0
+label IF_FALSE3
+push this 6
+push constant 1
+add
+pop this 6
+push this 11
+push this 6
+push this 7
+call Texto.printEstadoJuego 3
+pop temp 0
+label IF_FALSE0
+push pointer 0
+call CampoBatalla.verificarFinal 1
+pop local 1
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function CampoBatalla.setCoordenadas 1
+push argument 0
+pop pointer 0
+push constant 0
+pop local 0
+label WHILE_EXP0
+push local 0
+push argument 4
+lt
+not
+if-goto WHILE_END0
+push local 0
+push argument 1
+add
+push argument 2
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push argument 2
+push argument 3
+add
+pop argument 2
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+return
+function CampoBatalla.dispose 0
+push argument 0
+pop pointer 0
+push this 0
+call Matriz.dispose 1
+pop temp 0
+push this 1
+call Array.dispose 1
+pop temp 0
+push this 2
+call Array.dispose 1
+pop temp 0
+push this 3
+call Barco.dispose 1
+pop temp 0
+push this 4
+call Barco.dispose 1
+pop temp 0
+push this 5
+call Barco.dispose 1
+pop temp 0
+push this 11
+call Texto.dispose 1
+pop temp 0
+push pointer 0
+call Memory.deAlloc 1
+pop temp 0
+push constant 0
+return
+function CampoBatalla.trampa 0
+push argument 0
+pop pointer 0
+push constant 0
+push constant 0
+call Output.moveCursor 2
+pop temp 0
+call Output.println 0
+pop temp 0
+push pointer 0
+push this 3
+call CampoBatalla.printAtributosBarco 2
+pop temp 0
+push pointer 0
+push this 4
+call CampoBatalla.printAtributosBarco 2
+pop temp 0
+push pointer 0
+push this 5
+call CampoBatalla.printAtributosBarco 2
+pop temp 0
+push constant 0
+return
+function CampoBatalla.printAtributosBarco 0
+push argument 0
+pop pointer 0
+push argument 1
+call Barco.inicialX 1
+call Output.printInt 1
+pop temp 0
+push constant 1
+call String.new 1
+push constant 32
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+push argument 1
+call Barco.inicialY 1
+call Output.printInt 1
+pop temp 0
+push constant 1
+call String.new 1
+push constant 32
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+push argument 1
+call Barco.finalX 1
+call Output.printInt 1
+pop temp 0
+push constant 1
+call String.new 1
+push constant 32
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+push argument 1
+call Barco.finalY 1
+call Output.printInt 1
+pop temp 0
+push constant 1
+call String.new 1
+push constant 32
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+push constant 1
+call String.new 1
+push constant 32
+call String.appendChar 2
+call Output.printString 1
+pop temp 0
+push constant 0
+return

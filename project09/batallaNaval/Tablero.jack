@@ -1,0 +1,68 @@
+/**
+ * Clase Tablero para la construcción del tablero de juego
+ *
+ * @author Catalina Patiño
+ */
+class Tablero {
+    field int columnas, filas;
+    field int iniX, iniY, finX, finY;
+    field int lado;
+
+    /**
+     * Constructor para el tablero
+     * Crea un tablero de columnas*filas cuadrados
+     * Cada recuadro tiene un ancho/largo de longitud = lado
+     * Unidades dadas en bits
+     */
+    constructor Tablero new() {
+        let columnas = 6;
+        let filas = 6;
+        let lado = 256/(filas+2);
+        let iniX = lado - 1;
+        let iniY = iniX;
+        let finX = iniX + (lado*columnas);
+        let finY = iniY + (lado*filas);
+        do init();
+        do pintarTablero();
+        return this;
+    }
+
+    /**
+     * Inicializa las condiciones necesarias para la impresión del tablero
+     */
+    method void init() {        
+        do Screen.clearScreen();
+        do Screen.setColor(true);
+        return;
+    }
+
+    /**
+     * Pinta el tablero de acuerdo a las condiciones iniciales
+     */
+    method void pintarTablero() {
+        var int i, temp;
+        let i = 0;
+        let temp = iniY;
+        while (i < (filas+1)) {
+            do Screen.drawLine(iniX, temp, finX, temp);
+            let temp = temp + lado;
+            let i = i + 1;
+        }
+        let i = 0;
+        let temp = iniX;
+        while (i < (columnas+1)) {
+            do Screen.drawLine(temp, iniY, temp, finY);
+            let temp = temp + lado;
+            let i = i + 1;
+        }
+        return;
+    }
+
+    /**
+     * Destructor de la clase Tablero
+     */
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+}

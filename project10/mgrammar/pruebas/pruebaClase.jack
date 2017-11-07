@@ -1,0 +1,7 @@
+class Barco{
+ field int a;
+ field int c;
+ field boolean d;
+ field char e;
+ field Array f;
+}

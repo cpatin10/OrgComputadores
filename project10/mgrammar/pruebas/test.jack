@@ -1,0 +1,19 @@
+class Barco{
+ field int a;
+ field int c;
+
+  constructor Barco new(int x){
+    var int b;
+
+    let b = 1;
+    let a = x + b;
+    
+    return this;
+  }
+
+  method int get(){
+     return a;
+     return;
+  }
+  
+}

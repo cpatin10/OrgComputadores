@@ -1,0 +1,21 @@
+/**
+ * Clase Main para la implementación del juego Batalla Naval
+ *
+ * @author Catalina Patiño
+ */
+class Main {    
+    function void main() {
+        var Random random;
+        var Tablero tablero;
+        var CampoBatalla campoBatalla;
+        let random = Random.new();
+        let tablero = Tablero.new();
+        let campoBatalla = CampoBatalla.new(random);
+        do campoBatalla.jugar();
+
+        do random.dispose();
+        do tablero.dispose();
+        do campoBatalla.dispose();
+        return;
+    }
+}

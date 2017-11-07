@@ -1,0 +1,9 @@
+class Barco {
+
+   method void m() {
+     var Array a;
+     let a = Array.new(3);
+     let a[2] = 1;
+     return;
+   }
+}

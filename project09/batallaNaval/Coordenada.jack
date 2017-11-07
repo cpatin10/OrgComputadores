@@ -1,0 +1,93 @@
+/**
+ * Clase coordenada para el manejo de las coordenadas 'i' y 'j'
+ */
+class Coordenada {
+    field int coordenadaI, coordenadaJ;
+    field int max, min;
+
+    /**
+     * Constructor de la clase coordenada
+     * Inicializa la coordenada en (0,0)
+     */
+    constructor Coordenada new() {
+        let coordenadaI = 0;
+        let coordenadaJ = 0;
+        let max = 5;
+        let min = 0;
+        return this;
+    }
+
+    /**
+     * Pide las coordenadas i, j a la que se desea disparar
+     * El valor ingresado debe ser entre 1 y 6
+     * A cada coordenada se resta uno para que quede en rango entre 0 y 5
+     * La coordenada se pide hasta que sea válida
+     */
+    method void pedirCoordenadas() {
+        var int posX, posY;
+        var boolean valida;
+        let posX = 31;
+        let posY = 17;
+        let coordenadaI = pedirCoordenada(posY, posX, "fila");
+        let posY = posY + 2;
+        let coordenadaJ = pedirCoordenada(posY, posX, "columna");
+        return;
+    }
+
+    /**
+     * Pide una coordenada hasta que está sea válida
+     */
+    method int pedirCoordenada(int posY, int posX, String filcol) {
+        var boolean valida;
+        var int coordenada, lengthFC, tempX;
+        let lengthFC = filcol.length();
+        do Output.moveCursor(posY, posX);
+        do Output.printString("Ingresa la "); //length = 11
+        do Output.printString(filcol);
+        do Output.printString(": "); //length = 2
+        let coordenada = Keyboard.readInt("") - 1;
+        let valida = coordenadaValida(coordenada);
+        let tempX = 11 + 2 + lengthFC + posX;
+        while (~valida) {
+            do Output.moveCursor(posY, tempX);
+            do Output.printString("       ");
+            do Output.moveCursor(posY, tempX);
+            let coordenada = Keyboard.readInt("") - 1;
+            let valida = coordenadaValida(coordenada);
+        }
+        return coordenada;        
+    }
+
+    /**
+     * Verifica que la coordenada cumpla con las restricciones dadas de acuerdo a la matriz de juego
+     * Si cumple retorna true, de lo contrario false
+     */
+    method boolean coordenadaValida(int coordenada) {
+        if ((coordenada < min) | (coordenada > max)) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Retorna la coordenada 'i'
+     */
+    method int getI() {
+        return coordenadaI;
+    }
+
+    /**
+     * Retorna la coordenada 'j'
+     */
+    method int getJ() {
+        return coordenadaJ;
+    }
+
+    /**
+     * Destructor de la clase Coordenada
+     */
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+}

@@ -1,0 +1,187 @@
+/**
+ * Clase del barco con sus atributos y métodos para controlarlo.
+ *
+ * @author Catalina Patino
+ */
+
+class Barco {
+    field int tamano, direccion;
+    field int iniX, iniY, finX, finY;
+    field boolean estoyHundido;
+    field Array impactos;
+    field char marca;
+
+    /**
+     * Constructor for objects of class Barco
+     * Crea el barco sin impactos, en la dirección y posición que le envíen como parámetro
+     */
+    constructor Barco new(int x, int y, int tamanoP, int direccionP, char marcaP) {
+        var int i;  // variable para el ciclo
+        let marca = marcaP;
+        let estoyHundido = false;
+        let tamano = tamanoP;        
+        let impactos = Array.new(tamano);
+        let i = 0;
+        while (i < tamano) {
+            let impactos[i] = false;
+            let i = i + 1;
+        }
+        let direccion = direccionP;
+        if (direccion = 1) {
+            let iniX = x;
+            let iniY = y - tamano + 1;
+            let finX = x;
+            let finY = y + 1;
+        }
+        if (direccion = 2) {
+            let iniX = x;
+            let iniY = y;
+            let finX = x;
+            let finY = y + tamano;
+        }
+        if (direccion = 3) {
+            let iniX = x;
+            let iniY = y;
+            let finX = x + tamano;
+            let finY = y;
+        }
+        if (direccion = 4) {
+            let iniX = x - tamano + 1;
+            let iniY = y;
+            let finX = x + 1;
+            let finY = y;
+        }        
+        if (finX > 6) {
+            let iniX = x - (finX - 5);
+            let finX = 5;            
+        }
+        if (finY > 6) {
+            let iniY = y - (finY - 5);
+            let finY = 5;
+            
+        }
+        if (iniX < 0) {
+            let iniX = 0;
+            let finX = finX + (tamano - iniX);
+        }
+        if (iniY < 0) {
+            let iniY = 0;
+            let finY = finY + (tamano - iniY);
+        }
+        return this;
+    }
+
+    /**
+     * Chequea si el disparo le dió o no al barco. Retorna true si le dió.
+     * Adicionalmente, verifica si al barco ya le dieron en todas sus posiciones, con lo que se consideraría como hundido.
+     */
+    method boolean verificaDisparo(int dispX, int dispY) {
+        var int posArr;
+        var boolean valida;
+        let valida = false;
+        if (((~(iniX > dispX)) & (dispX < finX) & (iniY = dispY) & (dispY = finY)) | ((iniX = dispX) & (dispX = finX) & (~(iniY > dispY)) & (dispY < finY))){
+            if ((direccion = 1) | (direccion = 2)) {
+                let posArr = dispY - iniY;
+            } else {
+                let posArr = dispX - iniX;
+            }
+            let impactos[posArr] = true;
+            do verificaHundido();
+            return true;            
+        }        
+        return false;
+    }
+
+    /**
+     * Verifica en cada posición del barco si le dieron, en caso de que sí, notifica que el barco fue hundido
+     */
+    method void verificaHundido() {
+        var int i;
+        let estoyHundido = true;
+        let i = 0;
+        while (i < tamano) {
+            let estoyHundido = estoyHundido & impactos[i];
+            let i = i + 1;
+        }
+        return;
+    }
+
+     /**
+     * Getter que indica el estado del barco, si está hundido o no. 
+     */
+    method boolean getEstoyHundido() {
+        return estoyHundido;
+    }
+
+    /**
+     * Getter de la posición inicial en X del barco 
+     */
+    method int inicialX() {
+        return iniX;
+    }
+
+    /**
+     * Getter de la posición inicial en Y del barco
+     */
+    method int inicialY() {
+        return iniY;
+    }
+
+    /**
+     * Getter de la posición final en X del barco
+     */
+    method int finalX() {
+        return finX;
+    }
+
+    /**
+     * Getter de la posición final en Y del barco
+     */
+    method int finalY() {
+        return finY;
+    }
+
+    /**
+     * Getter de la marca identificadora del barco
+     */
+    method char getMarca() {
+        return marca;
+    }
+
+    /**
+     * Compara la posición del barco con otro barco que le pasen como parámetro. En caso de que se crucen, retorna true.
+     * Si no se cruzan, retorna false.
+     */
+    method boolean seCruza(Barco otroBarco) {
+        if (((otroBarco.inicialX() < finX) & (otroBarco.inicialX() = otroBarco.finalX()) & (~(iniX > otroBarco.inicialX()))) |
+            ((iniX < otroBarco.finalX()) & (iniX = finX) & (~(otroBarco.inicialX() > iniX))) |
+            ((~(iniX > otroBarco.inicialX())) & (~(otroBarco.inicialX() > finX)) & (~(finX > otroBarco.finalX())) & (finY = otroBarco.finalY())) |
+            ((~(otroBarco.inicialX() > iniX)) & (~(iniX > otroBarco.finalX())) & (~(otroBarco.finalX() > finX)) & (finY = otroBarco.finalY())) |
+            ((~(iniY > otroBarco.inicialY())) & (~(otroBarco.inicialY() > finY)) & (~(finY > otroBarco.finalY())) & (finX = otroBarco.finalX())) |
+            ((~(otroBarco.inicialY() > iniY)) & (~(iniY > otroBarco.finalY())) & (~(otroBarco.finalY() > finY)) & (finX = otroBarco.finalX())) |
+            (compararBarco(otroBarco))) {
+            return true;            
+        }
+        return false;
+    }
+
+    /**
+     * Compara el barco que llama el método con un barco dado
+     * Se comparan las variables iniX, iniY, finX, finY
+     */
+    method boolean compararBarco(Barco barcoComp) {
+        if ((iniX = barcoComp.inicialX()) & (iniY = barcoComp.inicialY()) & (finX = barcoComp.finalX()) & (finY = barcoComp.finalY())) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Destructor de la clase Barco
+     */
+    method void dispose() {
+        do impactos.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+}

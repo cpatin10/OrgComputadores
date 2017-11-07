@@ -1,0 +1,28 @@
+/**
+ * 8-way 16-bit multiplexor:
+ * out = a if sel == 000
+ *       b if sel == 001
+ *       etc.
+ *       h if sel == 111
+ */
+
+CHIP Mux8Way {
+
+    IN a, b, c, d, e, f, g, h,
+       sel[3];
+    OUT out;
+
+    PARTS:
+    Not(in=sel[0], out=notsel0);
+    Not(in=sel[1], out=notsel1);
+    Not(in=sel[2], out=notsel2);
+    And4Way(in[0]=a, in[1]=notsel0, in[2]=notsel1, in[3]=notsel2, out=q0);
+    And4Way(in[0]=b, in[1]=sel[0], in[2]=notsel1, in[3]=notsel2, out=q1);
+    And4Way(in[0]=c, in[1]=notsel0, in[2]=sel[1], in[3]=notsel2, out=q2);
+    And4Way(in[0]=d, in[1]=sel[0], in[2]=sel[1], in[3]=notsel2, out=q3);
+    And4Way(in[0]=e, in[1]=notsel0, in[2]=notsel1, in[3]=sel[2], out=q4);
+    And4Way(in[0]=f, in[1]=sel[0], in[2]=notsel1, in[3]=sel[2], out=q5);
+    And4Way(in[0]=g, in[1]=notsel0, in[2]=sel[1], in[3]=sel[2], out=q6);
+    And4Way(in[0]=h, in[1]=sel[0], in[2]=sel[1], in[3]=sel[2], out=q7);
+    Or8Way(in[0]=q0, in[1]=q1, in[2]=q2, in[3]=q3, in[4]=q4, in[5]=q5, in[6]=q6, in[7]=q7, out=out);
+}

@@ -1,0 +1,22 @@
+function Main.main 3
+call Random.new 0
+pop local 0
+call Tablero.new 0
+pop local 1
+push local 0
+call CampoBatalla.new 1
+pop local 2
+push local 2
+call CampoBatalla.jugar 1
+pop temp 0
+push local 0
+call Random.dispose 1
+pop temp 0
+push local 1
+call Tablero.dispose 1
+pop temp 0
+push local 2
+call CampoBatalla.dispose 1
+pop temp 0
+push constant 0
+return

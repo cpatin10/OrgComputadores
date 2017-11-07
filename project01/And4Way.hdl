@@ -1,0 +1,12 @@
+/**
+ * 4-way and
+ */
+
+CHIP And4Way {
+    IN in[4];
+    OUT out;
+
+    PARTS:
+    And(a=in[0], b=in[1], out=q1);
+    And3Way(a=q1, b=in[2], c=in[3], out=out);
+}

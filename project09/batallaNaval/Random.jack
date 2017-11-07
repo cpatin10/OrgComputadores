@@ -1,0 +1,70 @@
+/**
+ * Clase Random para la creación de valores aleatorios
+ * Utiliza el método congruencial para la generación de los valores
+ * 
+ * @author Catalina Patiño
+ */
+
+class Random {
+    field int a, c, m, r0;
+
+    /**
+     * Constructor de la clase Random, inicializa las variables
+     * El valor de a está dado por el usuario
+     */
+    constructor Random new() {
+        do pedirA();
+        let c = 13;
+        let m = 107;
+        let r0 = 45;
+        return this;
+    }
+
+    /**
+     * Genera el aleatorio, lo devuelve y recalcula r0 = (a+c*r0)%m
+     * El valor entregado debe ser dividido por m (no se hace aquí por falta de tipo de datos que manejan decimales)
+     */
+    method int getAleatorio() {
+        var int aleatorio;
+        var int temp;
+        let aleatorio = r0;
+        let temp = a + (c*r0);
+        let r0 = temp - (temp/m * m);
+        return aleatorio;
+    }
+
+    /**
+     * Genera un aleatorio entre 0 y n-1
+     */
+    method int getAleatorioByN(int n) {
+        return getAleatorio() * n/m;
+    }
+
+    /**
+     * Define 'a' a través de un valor dado por el usuario que no puede superar 10000 o ser inferior a 0
+     */
+    method void pedirA() {
+        var boolean valida;
+        let valida = false;
+        while (~valida) {
+            do Output.moveCursor(5, 8);
+            do Output.printString("Antes de empezar dime un numero entre 0 y 10000:");
+            do Output.moveCursor(7, 20);
+            let a = Keyboard.readInt("");
+            if ((a < 10001) & (~(a < 0))) {
+                let valida = true;
+            }
+            do Output.moveCursor(7, 20);
+            do Output.printString("          "); 
+        }
+        return;
+    }
+
+    /**
+     * Destructor de la clase Random
+     */
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+}

@@ -1,0 +1,9 @@
+class Barco {
+
+   method void m() {
+     var int a, b;
+     var Barco c, d;
+     var boolean e, f, g;
+     return;
+   }
+}

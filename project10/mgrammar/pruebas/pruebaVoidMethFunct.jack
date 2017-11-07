@@ -1,0 +1,11 @@
+class Barco{
+
+  function void set() {
+     return;
+  }
+
+  method void get(){
+     return;
+  }
+  
+}
